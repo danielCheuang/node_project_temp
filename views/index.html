@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>pool status</title>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <script>
+        var baseUrl = "http://backend.test.cjfan.net";
+
+        function init_version() {
+            var channel_01 = document.getElementById( "channel_01").value;
+            var platform_01 = document.getElementById( "platform_01").value;
+
+            console.log("channel_01:", channel_01, ",platform_01:", platform_01)
+
+            axios.get( baseUrl + "/getPolicyUrl?channel=" +channel_01+ "&platform=" + platform_01 )
+                .then(function (res) {
+                    var version = res.data.data
+                    console.log( version )
+                    document.getElementById( "version_01").value = version.version
+                    document.getElementById( "is_force_01").value = version.is_force
+                    document.getElementById( "download_url_01").value = version.download_url
+                    document.getElementById( "info_01").value = version.info
+                }).catch(function (e) {
+            })
+        }
+
+
+
+        function update_version() {
+            var channel_01 = document.getElementById( "channel_01").value;
+
+            console.log( channel_01 );
+
+            axios.post(baseUrl +"/updatePolicyUrl", {
+                channel: channel_01,
+                platform: platform_01,
+                version: version_01,
+                is_force: is_force_01,
+                download_url : download_url_01,
+                info: info_01
+            }).then( function (res) {
+                console.log(res)
+            }).catch(function (e) {
+                console.log(e);
+            })
+        }
+        
+        function testKuayu() {
+            axios.get("http://192.168.15.49:8093/api/v1/get_all_typename"
+            ).then(function (res) {
+                console.log(res)
+            }).catch(function (e) {
+                console.log(e)
+            })
+        }
+
+        testKuayu()
+
+    </script>
+</head>
+<body>
+    <div>
+        <h1>版本</h1>
+        <div>
+            <table border="1">
+                <tr>
+                    <td>channel</td>
+                    <td > <div  align="right"> <input id="channel_01" value="1001" /> </div> </td>
+                </tr>
+                <tr>
+                    <td>platform</td>
+                    <td > <div  align="right"> <input id="platform_01" value="IOS"> </div> </td>
+                </tr>
+                <tr>
+                    <td>version</td>
+                    <td><div > <input id="version_01" value="a001" /> </div></td>
+                </tr>
+                <tr>
+                    <td>is_force</td>
+                    <td > <div align="right"> <input  id="is_force_01" value="false" />  </div> </td>
+                </tr>
+                <tr>
+                    <td>download_url</td>
+                    <td > <div align="right"> <input id="download_url_01"  value="http://www.bbb.ccc.com/abc.html"/> </div> </td>
+                </tr>
+                <tr>
+                    <td>info</td>
+                    <td > <div  align="right"> <input id="info_01" value="abcdefg....." /> </div> </td>
+                </tr>
+                <tr> <div></div> </tr>
+            </table>
+            <input id="id_update" type="button" value="修改" onmousedown="update_version()" />
+        </div>
+
+    </div>
+
+
+    <script>
+        // init_version()
+    </script>
+
+</body>
+</html>
+
